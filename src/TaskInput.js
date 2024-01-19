@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 
 function TaskInput({ addTask }) {
-  const [input, setInput] = useState('');
+  const inputRef = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (input) {
-      addTask(input);
-      setInput('');
+    const title = inputRef.current.value;
+    if (title) {
+      addTask(title);
+      inputRef.current.value = '';
     }
   };
 
@@ -15,8 +16,7 @@ function TaskInput({ addTask }) {
     <form onSubmit={handleSubmit}>
       <input 
         type="text" 
-        value={input} 
-        onChange={(e) => setInput(e.target.value)} 
+        ref={inputRef}
       />
       <button type="submit">Add Task</button>
     </form>
