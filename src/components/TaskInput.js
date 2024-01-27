@@ -10,7 +10,6 @@ function TaskInput({ addTask }) {
       setInput('');
     }
   };
-
   return (
     <form onSubmit={handleSubmit}>
       <input 
@@ -18,7 +17,7 @@ function TaskInput({ addTask }) {
         value={input} 
         onChange={(e) => setInput(e.target.value)} 
       />
-      <button type="submit">Add Task</button>
+      <button style={{backgroundColor:"blue"}}>Submit</button>
     </form>
   );
 }
