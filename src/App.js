@@ -1,40 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import TaskInput from './TaskInput';
-import TaskList from './TaskList';
+import TaskInput from './components/TaskInput';
+import TaskList from './components/TaskList';
 import './App.css';
 
 function App() {
-  const [tasks, setTasks] = useState(() => {
-    const savedTasks = localStorage.getItem('tasks');
-    return savedTasks ? JSON.parse(savedTasks) : [];
-  });
-
-  useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [tasks]);
-
+  const [tasks, setTasks] = useState([]);
   const addTask = (title) => {
-    setTasks([...tasks, { id: Date.now(), title, completed: false }]);
+    setTasks([...tasks, { id: Date.now(), title: title, status: "backlog" }]);
   };
-
-  const toggleTask = (id) => {
-    setTasks(tasks.map(task => 
-      task.id === id ? { ...task, completed: !task.completed } : task
-    ));
-  };
-
   const deleteTask = (id) => {
     setTasks(tasks.filter(task => task.id !== id));
+  };
+
+ const addInProgress = (id) => {
+    setTasks(tasks.map(task =>
+      task.id === id ? { ...task, status: "inprogress" } : task
+    ));
+  };
+  const addDone = (id) => {
+    setTasks(tasks.map(task =>
+      task.id === id ? { ...task, status: "done" } : task
+    ));
+  };
+  const addBacklog= (id) => {
+    setTasks(tasks.map(task =>
+      task.id === id ? { ...task, status: "backlog" } : task
+    ));
   };
 
   return (
     <div className="app">
       <TaskInput addTask={addTask} />
-      <TaskList 
-        tasks={tasks} 
-        toggleTask={toggleTask} 
-        deleteTask={deleteTask} 
-      />
+      <TaskList tasks={tasks} functions={[addBacklog,addInProgress,addDone]} />
     </div>
   );
 }
